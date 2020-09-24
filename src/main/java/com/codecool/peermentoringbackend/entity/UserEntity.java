@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.validator.routines.EmailValidator;
 
 @Data
 @NoArgsConstructor
