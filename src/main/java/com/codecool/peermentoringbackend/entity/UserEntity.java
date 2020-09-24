@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -38,8 +39,9 @@ public class UserEntity {
     @Column(unique=true)
     private String username;
 
-    @Email(message = "Email should be valid")
-    @Column(unique=true)
+    @Column( nullable = false)
+    @Email
+    @NotBlank
     private String email;
 
     @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
