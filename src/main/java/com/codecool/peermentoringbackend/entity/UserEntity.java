@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +24,25 @@ public class UserEntity {
     @GeneratedValue
     private Long id;
 
+    @Pattern(regexp="^[A-Za-z]*$",message = "Invalid Input")
+    @Size(min = 2, max = 20, message = "First name can't be longer than 20 characters")
     @Column
     private String firstName;
 
+    @Pattern(regexp="^[A-Za-z]*$",message = "Invalid Input")
+    @Size(min = 2, max = 20, message = "Last name can't be longer than 20 characters")
     @Column
     private String lastName;
 
+    @Size(min = 2, max = 20, message = "username can't be longer than 20 characters")
     @Column(unique=true)
     private String username;
 
+    @Email(message = "Email should be valid")
     @Column(unique=true)
     private String email;
 
+    @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
     @Column
     private String password;
 
