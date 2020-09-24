@@ -30,6 +30,22 @@ public class JwtTokenFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 
+//        HttpServletRequest request = (HttpServletRequest) req;
+//        HttpServletResponse response = (HttpServletResponse) res;
+//
+//        ((HttpServletResponse) res).setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//        ((HttpServletResponse) res).setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+//        ((HttpServletResponse) res).setHeader("Access-Control-Max-Age", "86400");
+//
+//        response.addHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token");
+//        //response.setHeader("Set-Cookie", "locale=de; HttpOnly; SameSite=None");
+//        filterChain.doFilter(req, res);
+//        if ("OPTIONS".equals(request.getMethod())) {
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            filterChain.doFilter(req, res);
+//        } else {
+//            filterChain.doFilter(req, res);
+//        }
 
        filterChain.doFilter(req, res);
 
