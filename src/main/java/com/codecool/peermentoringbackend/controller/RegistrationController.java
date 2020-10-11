@@ -1,12 +1,11 @@
 package com.codecool.peermentoringbackend.controller;
 
+import com.codecool.peermentoringbackend.entity.UserEntity;
 import com.codecool.peermentoringbackend.model.RegResponse;
 import com.codecool.peermentoringbackend.model.UserModel;
 import com.codecool.peermentoringbackend.service.RegistrationService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,4 +31,7 @@ public class RegistrationController {
         response.getWriter().println(regResponse.getMessage());
     }
 
+    protected UserEntity doWithGoogle(GoogleIdToken.Payload payload) {
+        return registrationService.withGoogle(payload);
+    }
 }

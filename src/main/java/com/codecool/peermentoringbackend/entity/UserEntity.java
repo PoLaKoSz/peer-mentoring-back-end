@@ -2,6 +2,7 @@ package com.codecool.peermentoringbackend.entity;
 
 import com.codecool.peermentoringbackend.model.Module_;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
+@DynamicUpdate
 public class UserEntity {
 
     @Id

@@ -76,6 +76,16 @@
             <artifactId>commons-validator</artifactId>
             <version>1.7</version>
         </dependency>
+        <dependency>
+            <groupId>nl.vpro.api-client</groupId>
+            <artifactId>client-utils</artifactId>
+            <version>5.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.30.10</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findDistinctByUsername(String username);
 
+    UserEntity findDistinctByEmail(String email);
+
     @Query("SELECT DISTINCT u FROM UserEntity u WHERE u.technologyTags is not empty OR u.projectTags is not empty")
     List<UserEntity> getIfHasProjectOrTechTags();
 
