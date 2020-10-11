@@ -1,6 +1,7 @@
 package com.codecool.peermentoringbackend.entity;
 
 import com.codecool.peermentoringbackend.model.Module_;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -78,4 +79,8 @@ public class UserEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Set<ProjectEntity> projectTags = new HashSet<>();
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private VoteEntity voteEntity;
 }

@@ -62,6 +62,10 @@ public class QuestionEntity {
     @EqualsAndHashCode.Exclude
     Set<TechnologyEntity> technologyTags = new HashSet<>();
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "question", cascade = CascadeType.ALL)
+    private VoteEntity voteEntity;
+
     public void setUserData() {
         this.userId_ = user.getId();
         this.username = user.getUsername();

@@ -70,11 +70,20 @@ public class QuestionController {
         }
     }
 
-
     @PostMapping("/vote/{questionId}")
-    public void voteQuestion(@RequestBody Vote vote, @PathVariable Long questionId){
-        questionService.vote(vote, questionId);
+    public void voteQuestion(HttpServletRequest request, HttpServletResponse response, @RequestBody Vote vote, @PathVariable Long questionId) throws IOException {
+        String usernameFromToken = jwtTokenServices.getUsernameFromToken(request);
+        UserEntity userEntity = userRepository.findDistinctByUsername(usernameFromToken);
+        boolean success =questionService.vote(vote, questionId, userEntity);
+        if (success) {
+            response.setStatus(200);
+        } else {
+            response.setStatus(400);
+            response.getWriter().println("user already voted for this question");
+        }
     }
+
+
 
     @PostMapping("/add-tech-tag")
     public void addTechTagToQuestion(HttpServletResponse response, @RequestBody QuestionTagModel tagModel) throws IOException {

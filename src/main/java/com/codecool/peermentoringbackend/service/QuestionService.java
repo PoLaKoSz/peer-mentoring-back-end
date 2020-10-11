@@ -3,11 +3,9 @@ package com.codecool.peermentoringbackend.service;
 import com.codecool.peermentoringbackend.entity.AnswerEntity;
 import com.codecool.peermentoringbackend.entity.QuestionEntity;
 import com.codecool.peermentoringbackend.entity.UserEntity;
+import com.codecool.peermentoringbackend.entity.VoteEntity;
 import com.codecool.peermentoringbackend.model.*;
-import com.codecool.peermentoringbackend.repository.AnswerRepository;
-import com.codecool.peermentoringbackend.repository.QuestionRepository;
-import com.codecool.peermentoringbackend.repository.TechnologyTagRepository;
-import com.codecool.peermentoringbackend.repository.UserRepository;
+import com.codecool.peermentoringbackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +27,9 @@ public class QuestionService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
 
     @Autowired
     private TechnologyTagRepository technologyTagRepository;
@@ -132,12 +133,32 @@ return true;
     }
 
     @Transactional
-    public void vote(Vote vote, Long questionId) {
-        Query jpaQuery = entityManager.createQuery("UPDATE QuestionEntity q SET q.vote = q.vote + :vote where q.id = :questionId");
-        jpaQuery.setParameter("questionId", questionId);
-        jpaQuery.setParameter("vote", vote.getVote());
-        jpaQuery.executeUpdate();
+    public boolean vote(Vote vote, Long questionId, UserEntity userEntity) {
+        QuestionEntity questionEntity = questionRepository.findDistinctById(questionId);
+        VoteEntity voteEntity = voteRepository.findDistinctByQuestionAndUser(questionEntity, userEntity);
+        if(voteEntity == null){
+            VoteEntity entity = VoteEntity.builder()
+                    .question(questionEntity)
+                    .user(userEntity)
+                    .build();
+            voteRepository.saveAndFlush(entity);
+            voteEntity = voteRepository.findDistinctByQuestionAndUser(questionEntity, userEntity);
+        }
+        if(!voteEntity.isVoted()){
+            Query jpaQuery = entityManager.createQuery("UPDATE QuestionEntity q SET q.vote = q.vote + :vote where q.id = :questionId");
+            jpaQuery.setParameter("questionId", questionId);
+            jpaQuery.setParameter("vote", vote.getVote());
+            jpaQuery.executeUpdate();
+
+            Query jpaQuery2 = entityManager.createQuery("UPDATE VoteEntity v SET v.voted=true where v.id = :voteId");
+            jpaQuery2.setParameter("voteId", voteEntity.getId());
+            jpaQuery2.executeUpdate();
+            return true;
+        }
+        return false;
+
     }
+
 
     public boolean addNewTag(QuestionTagModel tagModel) {
 
